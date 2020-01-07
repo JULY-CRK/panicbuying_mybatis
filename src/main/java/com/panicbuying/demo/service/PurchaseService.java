@@ -1,8 +1,8 @@
 package com.panicbuying.demo.service;
 import java.util.List;
 
-import com.panicbuying.demo.mapper.ProductDao;
-import com.panicbuying.demo.mapper.PurchaseRecordDao;
+import com.panicbuying.demo.dao.ProductDao;
+import com.panicbuying.demo.dao.PurchaseRecordDao;
 import com.panicbuying.demo.pojo.ProductPo;
 import com.panicbuying.demo.pojo.PurchaseRecordPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +121,7 @@ public class PurchaseService  {
                 return false;
             }
             // 获取产品
-            ProductPo product = productDao.getProduct(productId);
+            ProductPo product = productDao.selectById(productId);
             // 比较库存和购买数量
             if (product.getStock() < quantity) {
                 // 库存不足
@@ -130,16 +130,15 @@ public class PurchaseService  {
             // 获取当前版本号
             int version = product.getVersion();
             // 扣减库存,同时将当前版本号发送给后台去比较
-            int result = productDao.decreaseProduct(productId, quantity);
+            product.setStock(product.getStock() - quantity);
+            product.setVersion(product.getVersion() + 1);
+            productDao.updateById(product);
             // 如果更新数据失败，说明数据在多线程中被其他线程修改，
             // 导致失败，则通过循环重入尝试购买商品
-            if (result == 0) {
-                continue;
-            }
             // 初始化购买记录
             PurchaseRecordPo pr = this.initPurchaseRecord(userId, product, quantity);
             // 插入购买记录
-            purchaseRecordDao.insertPurchaseRecord(pr);
+            purchaseRecordDao.insert(pr);
             return true;
         }
     }
@@ -230,8 +229,8 @@ public class PurchaseService  {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean dealRedisPurchase(List<PurchaseRecordPo> prpList) {
         for (PurchaseRecordPo prp : prpList) {
-            purchaseRecordDao.insertPurchaseRecord(prp);
-            productDao.decreaseProduct(prp.getProductId(), prp.getQuantity());
+            purchaseRecordDao.insert(prp);
+            //productDao.decreaseProduct(prp.getProductId(), prp.getQuantity());
         }
         return true;
     }

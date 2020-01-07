@@ -1,14 +1,15 @@
-package com.panicbuying.demo.mapper;
+package com.panicbuying.demo.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.panicbuying.demo.pojo.ProductPo;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**** imports ****/
 @Mapper
-public interface ProductDao {
-    // 获取产品
-   /* @Select("select id, product_name as productName,\n" +
+public interface ProductDao extends BaseMapper<ProductPo> {
+/*    // 获取产品
+   @Select("select id, product_name as productName,\n" +
             "\t\tstock, price, version, note from t_product\n" +
             "\t\twhere id=#{id}")
     @Results({
@@ -17,15 +18,15 @@ public interface ProductDao {
             @Result(property = "stock", column = "stock"),
             @Result(property = "price", column = "price"),
             @Result(property = "note", column = "note")
-    })*/
+    })
     public ProductPo getProduct(Long id);
 
     //减库存，而@Param标明MyBatis参数传递给后台
-    /*@Insert("update t_product set stock = stock - #{quantity},\n" +
+    @Insert("update t_product set stock = stock - #{quantity},\n" +
             "\t\tversion = version +1\n" +
-            "\t\twhere id = #{id}")*/
+            "\t\twhere id = #{id}")
     public int decreaseProduct(@Param("id") Long id, @Param("quantity") int quantity);
 
 //    public int decreaseProduct(@Param("id") Long id,
-//    	    @Param("quantity") int quantity, @Param("version") int version);
+//    	    @Param("quantity") int quantity, @Param("version") int version);*/
 }

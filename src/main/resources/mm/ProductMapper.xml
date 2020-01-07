@@ -2,7 +2,7 @@
 		<!DOCTYPE mapper
 				PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.panicbuying.demo.mapper.ProductDao">
+<mapper namespace="com.panicbuying.demo.dao.ProductDao">
 	<resultMap id ="ProductPo" type="com.panicbuying.demo.pojo.ProductPo">
 		<result column="id" property="id"/>
 		<result column="product_name" property="productName"/>

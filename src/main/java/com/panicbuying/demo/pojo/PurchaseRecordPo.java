@@ -1,14 +1,18 @@
 package com.panicbuying.demo.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.ibatis.type.Alias;
 import java.sql.Timestamp;
 import java.io.Serializable;
 
 /**** imports ****/
 // MyBatis别名定义
-@Alias("purchaseRecord")
+@TableName("t_purchase_record")
 public class PurchaseRecordPo implements Serializable {
     private static final long serialVersionUID = -360816189433370174L;
+    @TableId(type = IdType.AUTO)
     private Long id;
     private Long userId;
     private Long productId;

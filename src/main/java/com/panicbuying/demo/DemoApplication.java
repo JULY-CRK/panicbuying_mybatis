@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 // 定义扫描MyBatis接口
-@MapperScan(basePackages = "com.panicbuying.demo")
+@MapperScan(basePackages = "com.panicbuying.demo.dao")
 @EnableScheduling
 @SpringBootApplication(scanBasePackages = "com.panicbuying.demo")
 public class DemoApplication {
